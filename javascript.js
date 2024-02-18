@@ -11,6 +11,8 @@ function aaa(message){
 error_message.textContent = "";
 guess.value = "";
 let word = "";
+let result = [];
+let guess_number = 0;
 
 // this is a list of the 5 letter words. Terribile solution because I don't know how to use a server yet :(
 // can't just read a text file in javascript like you can in other languages...
@@ -82,13 +84,17 @@ function check_valid_guess() {
         fade(error_message, "not an english word");
         return(false);
     }
+    
     return(true);
 };
 
 function handle_guess() {
     if (check_valid_guess(guess.value)) {
-
-        let guess_as_list = guess.value.split("");
+        guess_value = guess.value;
+        guess.value = "";
+        guess_number += 1;
+        
+        let guess_as_list = guess_value.split("");
         word = word.split("");
 
         // 0: not in word
@@ -106,10 +112,37 @@ function handle_guess() {
             }
         }
         word = word.join("");
+
+        console.log(guess_value);
+        console.log(word);
+        console.log(result);
+
+        put_guess_in_grid()
     } else {
         guess.value = "";
     }
 };
+
+const boxes = document.querySelectorAll(".box");
+
+
+function put_guess_in_grid() {
+    // row number is equal to guess number
+    boxes_list = []
+    boxes.forEach((box) => {
+        
+        if(box.id[1] == guess_number) {
+            console.log(box.id);
+            boxes_list.push(box);
+        }
+    });
+
+    // this will cycle through the columns
+    for (let i = 0; i < 5; i++) {
+        fade_in(boxes_list[i].textContent, guess_value[i]);
+        // boxes_list[i].textContent = guess_value[i];
+    }
+}
 
 // should reset everything so a new game can start
 function new_game() {
@@ -128,3 +161,8 @@ guess.addEventListener('keypress', (e) => {
 
 
 new_game();
+
+
+// if guess number is 0
+// then I want the row 1s
+// and I go through column 1, then 2, then 3, etc.

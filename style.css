@@ -24,11 +24,17 @@ body {
     gap: 10px;
 }
 
-.row {
+.box {
     width:100px;
     height: 100px;
     border-radius: 2px;
     background-color: rgb(194, 190, 190);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bolder;
+    color: white;
 }
 
 p {
@@ -49,4 +55,9 @@ button {
     border-style: solid;
     border-radius: 5px;
     color: black;
+}
+
+.row1 {
+    background-color: rgb(102, 174, 102);
+
 }
