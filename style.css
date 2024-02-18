@@ -27,10 +27,26 @@ body {
 .row {
     width:100px;
     height: 100px;
-    background-color: green;
+    border-radius: 2px;
+    background-color: rgb(194, 190, 190);
 }
 
 p {
     height:50px;
     opacity:1;
+}
+
+input {
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: none;
+    border-style: solid;
+}
+
+button {
+    padding:15px;
+    background-color: white;
+    border-style: solid;
+    border-radius: 5px;
+    color: black;
 }

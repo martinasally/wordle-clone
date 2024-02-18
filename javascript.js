@@ -35,13 +35,19 @@ function fade_out(target) {
     }, 30)
 }
 
+function fade(target, message) {
+    fade_in(error_message, message);
+    setTimeout( () => {
+        fade_out(error_message);
+    }, 3000);
+}
+
 submit_button.addEventListener('click', () => {
     // entered something other than letters
     if (!/^[a-zA-Z]+$/.test(submittion.value)) {
-        fade_in(error_message, "you must enter all letters");
-        setTimeout( () => {
-            fade_out(error_message);
-        }, 3000);
+        fade(error_message, "you must enter only letters");
+    } else if (!(submittion.value.length == 5)) {
+        fade(error_message, "you must enter exactly 5 letters");
     }
 });
 
