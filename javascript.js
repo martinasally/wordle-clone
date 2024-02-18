@@ -51,3 +51,7 @@ submit_button.addEventListener('click', () => {
     }
 });
 
+
+function check_dictionary() {
+    
+}

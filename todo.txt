@@ -1,0 +1,10 @@
+- clean up the dictionary so it only has 5 letter words with no punctuation.
+- check if an entry is in the dictionary and fade an error message if not.
+- have a button to start a new game that picks a new word.
+- compare user input to word:
+    - compare each letter individually
+    - if letter is in the right spot keep make it green
+    - if letter is in the word but in the wrong spot, make it yellow
+    - if letter is not in the word, leave it grey
+    - if entire word matches, then display success screen and quit
+- once five turns have elapsed, display failure
