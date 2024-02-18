@@ -1,5 +1,5 @@
 ✅ clean up the dictionary so it only has 5 letter words with no punctuation.
-- check if an entry is in the dictionary and fade an error message if not.
+✅ check if an entry is in the dictionary and fade an error message if not.
 - have a button to start a new game that picks a new word.
 - compare user input to word:
     - compare each letter individually
