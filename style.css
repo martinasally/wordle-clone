@@ -57,7 +57,6 @@ button {
     color: black;
 }
 
-.row1 {
-    background-color: rgb(102, 174, 102);
-
+.error-message {
+    text-align: center;
 }

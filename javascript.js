@@ -42,7 +42,6 @@ function fade_in(target, message, color) {
         }, 30); // <-- change this to change fade speed
     } else if (color == "white") {
         target.style.color = `rgba(255,255,255,${op}`;
-        console.log("hey");
         // execute the code inside every 30ms. Change the 30 to change the speed of the fade
         let timer = setInterval(() => {
             op += 0.1
@@ -86,17 +85,20 @@ function fade(target, message, color) {
 function check_valid_guess() {
     // entered something other than letters
     if (!/^[a-zA-Z]+$/.test(guess.value)) {
-        fade(error_message, "you must enter only letters", "black");
+        // fade(error_message, "you must enter only letters", "black");
+        error_message.textContent = "you must enter only letters"
         return(false);
 
     // entered something with the wrong length
     } else if (!(guess.value.length == 5)) {
-        fade(error_message, "you must enter exactly 5 letters", "black");
+        // fade(error_message, "you must enter exactly 5 letters", "black");
+        error_message.textContent = "you must enter exactly 5 letters"
         return(false);
     
     // did not enter one of the acceptable words
     } else if (!words.includes(guess.value)) {
-        fade(error_message, "not an english word", "black");
+        // fade(error_message, "not an allowed word", "black");
+        error_message.textContent = "not an allowed word"
         return(false);
     }
     
@@ -147,21 +149,40 @@ function put_guess_in_grid() {
     boxes.forEach((box) => {
         
         if(box.id[1] == guess_number) {
-            console.log(box.id);
             boxes_list.push(box);
         }
     });
 
+
     // this will cycle through the columns
     for (let i = 0; i < 5; i++) {
-        fade_in(boxes_list[i], guess_value[i], "white");
-        // boxes_list[i].textContent = guess_value[i];
+        // fade_in(boxes_list[i], guess_value[i], "white");
+        boxes_list[i].textContent = guess_value[i];
+        if(result[i] == 0) {
+            boxes_list[i].style["background-color"] = "rgb(194, 190, 190)";
+        } else if (result[i] == 1) {
+            boxes_list[i].style["background-color"] = "rgb(228, 189, 111)";
+        } else {
+            boxes_list[i].style["background-color"] = "rgb(102, 174, 102)";
+        }
+    }
+
+    if(guess_value == word) {
+        alert("yey!");
+        // clear any grey rows underneath
+        // 
+        // add a button to play again
+        // which picks a new word
     }
 }
+// const box = document.querySelector(".column2 .row2");
+// box.style["background-color"] = "rgb(194, 190, 0)";
+
 
 // should reset everything so a new game can start
 function new_game() {
-    word = pick_word();
+    // word = pick_word();
+    word = "ghost"
 }
 
 submit_button.addEventListener('click', () => {
@@ -176,8 +197,3 @@ guess.addEventListener('keypress', (e) => {
 
 
 new_game();
-
-
-// if guess number is 0
-// then I want the row 1s
-// and I go through column 1, then 2, then 3, etc.
