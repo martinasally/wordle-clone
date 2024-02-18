@@ -6,6 +6,7 @@ body {
     height: 100vh;
     width: 100vw;
     gap:50px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .container {
@@ -27,4 +28,9 @@ body {
     width:100px;
     height: 100px;
     background-color: green;
+}
+
+p {
+    height:50px;
+    opacity:1;
 }
