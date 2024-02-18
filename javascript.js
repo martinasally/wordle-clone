@@ -22,21 +22,36 @@ let words = ["about", "other", "which", "their", "there", "first", "would", "the
 
 // function to fade an element in with a given text value
 // increase the opacity by 0.1 every 30ms until the opacity is 1
-function fade_in(target, message) {
-    clearTimeout();
-    clearInterval();
+function fade_in(target, message, color) {
     let op = 0;
-    target.style.opacity = op;
+    
     target.textContent = message;
 
-    // execute the code inside every 30ms. Change the 30 to change the speed of the fade
-    let timer = setInterval(() => {
-        op += 0.1
-        target.style.opacity = op;
-        if (op >= 1) {
-            clearInterval(timer);
-        }
-    }, 30); // <-- change this to change fade speed
+    if(color == "black") {
+        // black
+        // not a good solution to have separate blocks for the separate colors
+        // want the letters to fade in without fading in the background...
+        target.style.color = `rgba(0,0,0,${op}`;
+        // execute the code inside every 30ms. Change the 30 to change the speed of the fade
+        let timer = setInterval(() => {
+            op += 0.1
+            target.style.color = `rgba(0,0,0,${op}`;
+            if (op >= 1) {
+                clearInterval(timer);
+            }
+        }, 30); // <-- change this to change fade speed
+    } else if (color == "white") {
+        target.style.color = `rgba(255,255,255,${op}`;
+        console.log("hey");
+        // execute the code inside every 30ms. Change the 30 to change the speed of the fade
+        let timer = setInterval(() => {
+            op += 0.1
+            target.style.color = `rgba(255,255,255,${op}`;
+            if (op >= 1) {
+                clearInterval(timer);
+            }
+        }, 30); // <-- change this to change fade speed
+    }
 }
 
 // function to fade out an element
@@ -56,8 +71,8 @@ function fade_out(target) {
 }
 
 // fade the message in slowly, keep it there for 3 seconds, then fade it out slowly
-function fade(target, message) {
-    fade_in(error_message, message);
+function fade(target, message, color) {
+    fade_in(error_message, message, color);
     setTimeout( () => {
         fade_out(error_message);
     }, 3000);
@@ -71,17 +86,17 @@ function fade(target, message) {
 function check_valid_guess() {
     // entered something other than letters
     if (!/^[a-zA-Z]+$/.test(guess.value)) {
-        fade(error_message, "you must enter only letters");
+        fade(error_message, "you must enter only letters", "black");
         return(false);
 
     // entered something with the wrong length
     } else if (!(guess.value.length == 5)) {
-        fade(error_message, "you must enter exactly 5 letters");
+        fade(error_message, "you must enter exactly 5 letters", "black");
         return(false);
     
     // did not enter one of the acceptable words
     } else if (!words.includes(guess.value)) {
-        fade(error_message, "not an english word");
+        fade(error_message, "not an english word", "black");
         return(false);
     }
     
@@ -139,7 +154,7 @@ function put_guess_in_grid() {
 
     // this will cycle through the columns
     for (let i = 0; i < 5; i++) {
-        fade_in(boxes_list[i].textContent, guess_value[i]);
+        fade_in(boxes_list[i], guess_value[i], "white");
         // boxes_list[i].textContent = guess_value[i];
     }
 }
