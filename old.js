@@ -1,4 +1,4 @@
-
+const submit_button = document.querySelector(".submit-button");
 const guess = document.querySelector(".submittion");
 const error_message = document.querySelector(".error-message");
 const consolewonsle = document.querySelector(".console");
@@ -87,9 +87,6 @@ function check_valid_guess() {
     if (!/^[a-zA-Z]+$/.test(guess.value)) {
         // fade(error_message, "you must enter only letters", "black");
         error_message.textContent = "you must enter only letters"
-        let target = setInterval(() => {
-            error_message.textContent = "";
-        }, 2000);
         return(false);
 
     // entered something with the wrong length
@@ -176,7 +173,6 @@ function put_guess_in_grid() {
         // 
         // add a button to play again
         // which picks a new word
-        new_game();
     }
 }
 // const box = document.querySelector(".column2 .row2");
@@ -186,13 +182,17 @@ function put_guess_in_grid() {
 // should reset everything so a new game can start
 function new_game() {
     word = pick_word();
-    guess.value = "";
+    guess_number = 0
     boxes.forEach((box) => {
+        box.style['background-color'] = "rgb(194, 190, 190)";
         box.textContent = "";
-        box.style["background-color"] = "rgb(194, 190, 190)";
     })
-    guess_number = 0;
+
 }
+
+submit_button.addEventListener('click', () => {
+    handle_guess();
+});
 
 guess.addEventListener('keypress', (e) => {
     if (e.key =="Enter") {
