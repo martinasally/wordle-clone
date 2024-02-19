@@ -1,8 +1,0 @@
-- change it so guess appears in the boxes
-- add a keyboard so you can see what letters have been guessed already
-- make error messages fade in and out nicely
-- make squares fade into different colors nicely
-- make letters fade into squares nicely
-- add more english words
-- display nice screen if user wins
-- display nice screen if user loses
