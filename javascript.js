@@ -5,12 +5,8 @@ const consolewonsle = document.querySelector(".console");
 const boxes = document.querySelectorAll(".box");
 const finished = document.querySelector(".finished");
 const newgame = document.querySelector(".newgame");
-$(".newgame").css('opacity', '0');
 
-function aaa(message){
-    consolewonsle.textContent = message;
-}
-
+newgame.style.opacity = "0";
 error_message.textContent = "";
 guess.value = "";
 let word = "";
@@ -30,6 +26,8 @@ let words = ["about", "other", "which", "their", "there", "first", "would", "the
 
 let timeout;
 
+// fade in just the error messages
+// not used for any other elements
 function fade_message(message) {
     clearTimeout(timeout);
     error_message.style.color = "white";
@@ -98,11 +96,10 @@ function handle_guess() {
 
         // note: I never actually alter word or guess.value
         // so changing letters to false doesn't effect any future guesses
-        
 
         console.log(guess.value);
         console.log(word);
-        console.log(result)
+        console.log(result.join(""));
 
         put_guess_in_grid()
     } else {
@@ -112,9 +109,10 @@ function handle_guess() {
 
 function put_guess_in_grid() {
     // row number is equal to guess number
-    boxes_list = []
+    boxes_list = [];
     boxes.forEach((box) => {
         
+        // make a list out of all of the boxes in the relevant row
         if(box.id[1] == guess_number) {
             boxes_list.push(box);
         }
@@ -123,26 +121,26 @@ function put_guess_in_grid() {
 
     // this will cycle through the columns
     for (let i = 0; i < 5; i++) {
-        // thing to let me use jquery animate
-        // getting the id in a string format
+        // this is to let me use jquery animate
+        // get the id in a string format
         let boxid = '#'+String(boxes_list[i].id);
 
-        // fade_in(boxes_list[i], guess_value[i], "white");
+        // put the letters into the boxes
         boxes_list[i].style.color = "rgb(194, 190, 190)";
         boxes_list[i].textContent = guess.value[i];
         $(boxid).animate({color:"white"}, 500);
+
+        // colour the boxes themselves
         if(result[i] == 0) {
             $(boxid).animate({"background-color":"rgb(194, 190, 190)"}, 500);
-            // boxes_list[i].style["background-color"] = "rgb(194, 190, 190)";
         } else if (result[i] == 1) {
             $(boxid).animate({"background-color":"rgb(228, 189, 111)"}, 500);
-            // boxes_list[i].style["background-color"] = "rgb(228, 189, 111)";
         } else {
             $(boxid).animate({"background-color":"rgb(102, 174, 102)"}, 500);
-            // boxes_list[i].style["background-color"] = "rgb(102, 174, 102)";
         }
     }
 
+    // end of game scenarios
     if(guess.value == word) {
         finished.style.color = "white";
         finished.textContent = "Nicely done!";
@@ -159,14 +157,11 @@ function put_guess_in_grid() {
 
     guess.value="";
 }
-// const box = document.querySelector(".column2 .row2");
-// box.style["background-color"] = "rgb(194, 190, 0)";
 
-
-// should reset everything so a new game can start
+// reset everything so a new game can start
 function new_game() {
-    // word = pick_word();
-    word="where";
+    word = pick_word();
+
     guess.value = "";
     finished.style.color = "white";
     newgame.style.opacity = "0";
