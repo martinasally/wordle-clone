@@ -6,6 +6,8 @@ const boxes = document.querySelectorAll(".box");
 const finished = document.querySelector(".finished");
 const newgame = document.querySelector(".newgame");
 
+guess.maxLength = 5;
+
 newgame.style.opacity = "0";
 error_message.textContent = "";
 guess.value = "";
@@ -60,7 +62,12 @@ function check_valid_guess() {
 
 function handle_guess() {
     if (check_valid_guess(guess.value)) {
+
+        // everything that needs to be done once a guess is officially made
         guess_number += 1;
+        guess_made_boxes = get_relevant_boxes(guess_number-1);
+        current_guess_boxes = get_relevant_boxes(guess_number);
+        current_guess = [];
         
         let guess_as_list = guess.value.split("");
         word_as_list = word.split("");
@@ -108,26 +115,14 @@ function handle_guess() {
 };
 
 function put_guess_in_grid() {
-    // row number is equal to guess number
-    boxes_list = [];
-    boxes.forEach((box) => {
-        
-        // make a list out of all of the boxes in the relevant row
-        if(box.id[1] == guess_number) {
-            boxes_list.push(box);
-        }
-    });
-
 
     // this will cycle through the columns
     for (let i = 0; i < 5; i++) {
         // this is to let me use jquery animate
         // get the id in a string format
-        let boxid = '#'+String(boxes_list[i].id);
-
+        let boxid = '#'+String(guess_made_boxes[i].id);
         // put the letters into the boxes
-        boxes_list[i].style.color = "rgb(194, 190, 190)";
-        boxes_list[i].textContent = guess.value[i];
+        guess_made_boxes[i].textContent = guess.value[i];
         $(boxid).animate({color:"white"}, 500);
 
         // colour the boxes themselves
@@ -169,11 +164,17 @@ function new_game() {
         box.textContent = "";
         box.style["background-color"] = "rgb(194, 190, 190)";
     })
+
     guess_number = 0;
+    current_guess_boxes = get_relevant_boxes(guess_number);
 }
 
 guess.addEventListener('keypress', (e) => {
     if (e.key =="Enter") {
+        current_guess = "";
+        for(let box of current_guess_boxes) {
+            box.textContent = "";
+        }
         handle_guess();
     }
 });
@@ -181,5 +182,40 @@ guess.addEventListener('keypress', (e) => {
 newgame.addEventListener('click', () => {
     new_game();
 })
+
+function get_relevant_boxes(row) {
+    row++;
+    boxes_list = [];
+    // row number is equal to guess number
+    boxes.forEach((box) => {
+        // make a list out of all of the boxes in the relevant row
+        if(box.id[1] == row) {
+            boxes_list.push(box);
+        }
+    });
+    return(boxes_list);
+}
+
+current_guess = [];
+
+guess.addEventListener('keypress', (e) => {
+    if(current_guess.length < 5 && e.key.length == 1) {
+        current_guess.push(e.key);
+
+        current_guess_boxes[current_guess.length-1].style.color = 'rgb(194, 190, 190)';
+        current_guess_boxes[current_guess.length-1].textContent = e.key;
+        boxid = "#"+String(current_guess_boxes[current_guess.length-1].id)
+        $(boxid).animate({color:"white"}, 200);
+    }
+});
+
+guess.addEventListener('keyup', (e) => {
+    if(e.keyCode == 8) {
+        boxid = "#"+String(current_guess_boxes[current_guess.length-1].id)
+        $(boxid).animate({color:'rgb(194, 190, 190)'}, 200);
+        current_guess_boxes[current_guess.length-1].textContent = "";
+        current_guess.splice(-1, 1);
+    }
+});
 
 new_game();
