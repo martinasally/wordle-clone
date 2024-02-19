@@ -1,7 +1,6 @@
 
 const guess = document.querySelector(".submittion");
 const error_message = document.querySelector(".error-message");
-const consolewonsle = document.querySelector(".console");
 const boxes = document.querySelectorAll(".box");
 const finished = document.querySelector(".finished");
 const newgame = document.querySelector(".newgame");
@@ -14,6 +13,7 @@ guess.value = "";
 let word = "";
 let result = [];
 let guess_number = 0;
+wrong_guess_list = [];
 
 // this is a list of the 5 letter words. Terribile solution because I don't know how to use a server yet :(
 // can't just read a text file in javascript like you can in other languages...
@@ -81,23 +81,25 @@ function handle_guess() {
             // check if there is a letter in the right place
             // if it is, turn it to false in both the word and the guess
             // then I can't accidentally match it again
-            if (guess_as_list[i] == word_as_list[i] && guess_as_list[i] && word_as_list[i]) {
+            if (guess_as_list[i] == word_as_list[i] && guess_as_list[i]) {
                 result[i] = 2;
-
                 word_as_list[i]=false;
                 guess_as_list[i]=false;
             }
         }
+
         // same here, check only the letters that aren't false already
         // so I don't match them again
         // and if there is a match, turn them to false in the word and the guess
         for (let i = 0; i < 5; i++) {
-            if (word_as_list.includes(guess_as_list[i]) && guess_as_list[i] && word_as_list[i]) {
+            if (word_as_list.includes(guess_as_list[i]) && guess_as_list[i]) {
                 result[i] = 1;
                 word_as_list[word_as_list.indexOf(guess_as_list[i])]=false;
                 guess_as_list[i]=false;
-            } else if (!word_as_list.includes(guess_as_list[i]) && guess_as_list[i] && word_as_list[i]) {
+            } 
+            else if (!word_as_list.includes(guess_as_list[i]) && guess_as_list[i]) {
                 result[i] = 0;
+                wrong_guess_list.push(guess_as_list[i]);
             }
         }
 
@@ -107,8 +109,10 @@ function handle_guess() {
         console.log(guess.value);
         console.log(word);
         console.log(result.join(""));
+        console.log(wrong_guess_list);
 
         put_guess_in_grid()
+
     } else {
         guess.value = "";
     }
@@ -155,8 +159,8 @@ function put_guess_in_grid() {
 
 // reset everything so a new game can start
 function new_game() {
-    word = pick_word();
-
+    // word = pick_word();
+    word="every";
     guess.value = "";
     finished.style.color = "white";
     newgame.style.opacity = "0";
@@ -167,11 +171,12 @@ function new_game() {
 
     guess_number = 0;
     current_guess_boxes = get_relevant_boxes(guess_number);
+    wrong_guess_list = [];
 }
 
 guess.addEventListener('keypress', (e) => {
     if (e.key =="Enter") {
-        current_guess = "";
+        current_guess = [];
         for(let box of current_guess_boxes) {
             box.textContent = "";
         }
@@ -205,6 +210,9 @@ guess.addEventListener('keypress', (e) => {
         current_guess_boxes[current_guess.length-1].style.color = 'rgb(194, 190, 190)';
         current_guess_boxes[current_guess.length-1].textContent = e.key;
         boxid = "#"+String(current_guess_boxes[current_guess.length-1].id)
+        if (wrong_guess_list.includes(e.key)) {
+            $(boxid).animate({backgroundColor:"rgb(210, 126, 126)"}, 200);
+        }
         $(boxid).animate({color:"white"}, 200);
     }
 });
@@ -214,6 +222,7 @@ guess.addEventListener('keyup', (e) => {
         boxid = "#"+String(current_guess_boxes[current_guess.length-1].id)
         $(boxid).animate({color:'rgb(194, 190, 190)'}, 200);
         current_guess_boxes[current_guess.length-1].textContent = "";
+        $(boxid).animate({backgroundColor:"rgb(194, 190, 190)"}, 200);
         current_guess.splice(-1, 1);
     }
 });
