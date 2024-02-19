@@ -1,5 +1,5 @@
-f1 = open('words.txt', 'r')
-f2 = open('writing.txt', 'w')
+f1 = open('words2.txt', 'r')
+f2 = open('writing2.txt', 'w')
 
 
 i=1
