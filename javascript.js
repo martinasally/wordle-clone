@@ -3,6 +3,9 @@ const guess = document.querySelector(".submittion");
 const error_message = document.querySelector(".error-message");
 const consolewonsle = document.querySelector(".console");
 const boxes = document.querySelectorAll(".box");
+const finished = document.querySelector(".finished");
+const newgame = document.querySelector(".newgame");
+$(".newgame").css('opacity', '0');
 
 function aaa(message){
     consolewonsle.textContent = message;
@@ -126,12 +129,17 @@ function put_guess_in_grid() {
     }
 
     if(guess_value == word) {
-        alert("yey!");
-        // clear any grey rows underneath
-        // 
-        // add a button to play again
-        // which picks a new word
-        new_game();
+        finished.style.color = "white";
+        finished.textContent = "Nicely done!";
+        $(".finished").animate({color:"black"}, 1500);
+        $(".newgame").animate({opacity:"1"}, 1500);
+    }
+
+    if (guess_number == 5) {
+        finished.style.color = "white";
+        finished.textContent = `oh no :( the word was ${word}`;
+        $(".finished").animate({color:"black"}, 1500);
+        $(".newgame").animate({opacity:"1"}, 1500);
     }
 }
 // const box = document.querySelector(".column2 .row2");
@@ -140,9 +148,10 @@ function put_guess_in_grid() {
 
 // should reset everything so a new game can start
 function new_game() {
-    // word = pick_word();
-    word="ghoul";
+    word = pick_word();
+    // word="ghost";
     guess.value = "";
+    finished.style.color = "white";
     boxes.forEach((box) => {
         box.textContent = "";
         box.style["background-color"] = "rgb(194, 190, 190)";
@@ -156,5 +165,8 @@ guess.addEventListener('keypress', (e) => {
     }
 });
 
+newgame.addEventListener('click', () => {
+    new_game();
+})
 
 new_game();

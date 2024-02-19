@@ -38,7 +38,7 @@ body {
 }
 
 p {
-    height:50px;
+    height:100px;
     opacity:1;
 }
 
@@ -60,4 +60,10 @@ button {
 
 .error-message {
     text-align: center;
+}
+
+.finished {
+    height:100px;
+    font-size: 24px;
+    font-weight: bolder;
 }
