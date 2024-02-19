@@ -99,7 +99,10 @@ function handle_guess() {
             } 
             else if (!word_as_list.includes(guess_as_list[i]) && guess_as_list[i]) {
                 result[i] = 0;
-                wrong_guess_list.push(guess_as_list[i]);
+                word_as_list_2 = word.split("");
+                if(!word_as_list_2.includes(guess_as_list[i])) {
+                    wrong_guess_list.push(guess_as_list[i]);
+                }
             }
         }
 
@@ -159,8 +162,7 @@ function put_guess_in_grid() {
 
 // reset everything so a new game can start
 function new_game() {
-    // word = pick_word();
-    word="every";
+    word = pick_word();
     guess.value = "";
     finished.style.color = "white";
     newgame.style.opacity = "0";
@@ -174,11 +176,13 @@ function new_game() {
     wrong_guess_list = [];
 }
 
+// as soon as they hit enter, all of the input clears up
 guess.addEventListener('keypress', (e) => {
     if (e.key =="Enter") {
         current_guess = [];
         for(let box of current_guess_boxes) {
             box.textContent = "";
+            box.style.backgroundColor = "rgb(194, 190, 190)";
         }
         handle_guess();
     }
@@ -188,6 +192,7 @@ newgame.addEventListener('click', () => {
     new_game();
 })
 
+// return the boxes of whichever row as a list
 function get_relevant_boxes(row) {
     row++;
     boxes_list = [];
@@ -201,8 +206,11 @@ function get_relevant_boxes(row) {
     return(boxes_list);
 }
 
+// what the user has typed into the input so far
 current_guess = [];
 
+// add letters to the current guess
+// fade them in nicely, but make them red if the user already guessed that letter incorrectly
 guess.addEventListener('keypress', (e) => {
     if(current_guess.length < 5 && e.key.length == 1) {
         current_guess.push(e.key);
@@ -217,6 +225,7 @@ guess.addEventListener('keypress', (e) => {
     }
 });
 
+// delete a letter from the current guess
 guess.addEventListener('keyup', (e) => {
     if(e.keyCode == 8) {
         boxid = "#"+String(current_guess_boxes[current_guess.length-1].id)
