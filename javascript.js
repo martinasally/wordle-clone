@@ -1,10 +1,11 @@
-import { get_words } from "./words.js";
+import { get_words } from "./words/words.js";
 
 const guess = document.querySelector(".guess");
 const error_message = document.querySelector(".error-message");
 const boxes = document.querySelectorAll(".box");
 const finished = document.querySelector(".finished");
 const newgame = document.querySelector(".newgame");
+const say_the_word = document.querySelector(".say-the-word");
 
 guess.maxLength = 5;
 error_message.textContent = "";
@@ -20,6 +21,7 @@ let word_as_list_2;
 let current_guess_boxes = [];
 let boxid;
 let boxes_list = [];
+let date = Date.now();
 
 // get words from the dictionary list of 5 letter words in 'words.js'
 let words = get_words();
@@ -130,48 +132,78 @@ function handle_guess() {
 
 // put the letters into the grid and colour the box depending on correctness of the guess
 function put_guess_in_grid() {
-
-    // this will cycle through the columns
-    for (let i = 0; i < 5; i++) {
-        // this is to let me use jquery animate
-        // get the id in a string format
-        let boxid = '#'+String(guess_made_boxes[i].id);
-
-        // put the letters into the boxes
-        guess_made_boxes[i].textContent = guess.value[i];
-        $(boxid).animate({color:"white"}, 500);
-
-        // colour the boxes themselves
-        if(result[i] == 0) {
-            $(boxid).animate({"background-color":"rgb(194, 190, 190)"}, 500);
-        } else if (result[i] == 1) {
-            $(boxid).animate({"background-color":"rgb(228, 189, 111)"}, 500);
-        } else {
-            $(boxid).animate({"background-color":"rgb(102, 174, 102)"}, 500);
-        }
-    }
-
+    
     // end of game scenarios
     if(guess.value == word) {
+        // 0 just starts bouncing the first letter
+        // need it to be able to bounce them one after the other instead of all at once
+        
+        end_game_graphic();
+
         finished.style.color = "white";
         finished.textContent = "Nicely done!";
         $(".finished").animate({color:"black"}, 1500);
         $(".newgame").animate({opacity:"1"}, 1500);
-    }
 
-    if (guess_number == 5) {
+    } else if (guess_number == 5) {
         finished.style.color = "white";
         finished.textContent = `oh no :( the word was ${word}`;
         $(".finished").animate({color:"black"}, 1500);
         $(".newgame").animate({opacity:"1"}, 1500);
+
+    } else {
+        // this will cycle through the columns
+        for (let i = 0; i < 5; i++) {
+            // this is to let me use jquery animate
+            // get the id in a string format
+            let boxid = '#'+String(guess_made_boxes[i].id);
+
+            // put the letters into the boxes
+            guess_made_boxes[i].textContent = guess.value[i];
+            $(boxid).animate({color:"white"}, 500);
+
+
+            // colour the boxes themselves
+            if(result[i] == 0) {
+                $(boxid).animate({"background-color":"rgb(194, 190, 190)"}, 500);
+            } else if (result[i] == 1) {
+                $(boxid).animate({"background-color":"rgb(228, 189, 111)"}, 500);
+            } else {
+                $(boxid).animate({"background-color":"rgb(102, 174, 102)"}, 500);
+            }
+            
+        }
     }
 
     guess.value="";
 }
 
+function id(i) {
+   return('#'+String(guess_made_boxes[i].id));
+}
+
+function end_game_graphic() {
+    for (let i = 0; i<5; i++) {
+        boxid = '#'+String(guess_made_boxes[i].id);
+        guess_made_boxes[i].textContent = word[i];
+        $(boxid).animate({"background-color":"rgb(102, 174, 102)"}, 500);
+    }
+
+    // wait for the boxes to finish changing colors before starting the shake animation
+    // this assumes it will take 520ms
+    setTimeout(() => {
+        for (let i = 0; i < 5; i++) {
+            let delay = i*50;
+            $(id(i)).delay(delay).effect('shake', {direction:"up", distance:7, times:1});
+        }
+    }, 520);
+}
+
 // reset everything so a new game can start
 function new_game() {
     word = pick_word();
+    date = Date.now();
+    say_the_word.textContent = word;
     guess.value = "";
     finished.style.color = "white";
     newgame.style.opacity = "0";
