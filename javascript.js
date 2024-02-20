@@ -6,6 +6,7 @@ const boxes = document.querySelectorAll(".box");
 const finished = document.querySelector(".finished");
 const newgame = document.querySelector(".newgame");
 const say_the_word = document.querySelector(".say-the-word");
+const body = document.querySelector("body");
 
 guess.maxLength = 5;
 error_message.textContent = "";
@@ -49,6 +50,7 @@ function fade_message(message) {
 
 // check if the guess is a real word, is only letters, and is 5 letters long
 function check_valid_guess() {
+    console.log(guess.value);
     // entered something other than letters
     if (!/^[a-zA-Z]+$/.test(guess.value)) {
         fade_message("you must enter only letters");
@@ -217,23 +219,6 @@ function new_game() {
     wrong_guess_list = [];
 }
 
-// as soon as they hit enter, all of the input clears up
-guess.addEventListener('keypress', (e) => {
-    if (e.key =="Enter") {
-        current_guess = [];
-        for(let box of current_guess_boxes) {
-            box.textContent = "";
-            box.style.backgroundColor = "rgb(194, 190, 190)";
-        }
-        handle_guess();
-    }
-});
-
-// start a new game when they hit the button
-newgame.addEventListener('click', () => {
-    new_game();
-})
-
 // return the boxes of whichever row as a list
 function get_relevant_boxes(row) {
     row++;
@@ -253,7 +238,7 @@ let current_guess = [];
 
 // add letters to the current guess
 // fade them in nicely, but make them red if the user already guessed that letter incorrectly
-guess.addEventListener('keypress', (e) => {
+body.addEventListener('keypress', (e) => {
     if(current_guess.length < 5 && e.key.length == 1) {
         current_guess.push(e.key);
 
@@ -268,7 +253,7 @@ guess.addEventListener('keypress', (e) => {
 });
 
 // delete a letter from the current guess
-guess.addEventListener('keydown', (e) => {
+body.addEventListener('keydown', (e) => {
     if(e.keyCode == 8) {
         boxid = "#"+String(current_guess_boxes[current_guess.length-1].id)
         $(boxid).animate({color:'rgb(194, 190, 190)'}, 200);
@@ -277,5 +262,23 @@ guess.addEventListener('keydown', (e) => {
         current_guess.splice(-1, 1);
     }
 });
+
+// as soon as they hit enter, all of the input clears up
+body.addEventListener('keypress', (e) => {
+    if (e.key =="Enter") {
+        guess.value = current_guess.join("");
+        current_guess = [];
+        for(let box of current_guess_boxes) {
+            box.textContent = "";
+            box.style.backgroundColor = "rgb(194, 190, 190)";
+        }
+        handle_guess();
+    }
+});
+
+// start a new game when they hit the button
+newgame.addEventListener('click', () => {
+    new_game();
+})
 
 new_game();
