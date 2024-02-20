@@ -9,7 +9,8 @@ const say_the_word = document.querySelector(".say-the-word");
 const body = document.querySelector("body");
 
 guess.maxLength = 5;
-error_message.textContent = "";
+error_message.textContent = " ";
+finished.textContent = " ";
 guess.value = "";
 
 let word = "";
@@ -205,6 +206,7 @@ function end_game_graphic() {
 function new_game() {
     word = pick_word();
     date = Date.now();
+    say_the_word.style.opacity = 0;
     say_the_word.textContent = word;
     guess.value = "";
     finished.style.color = "white";
@@ -255,11 +257,13 @@ body.addEventListener('keypress', (e) => {
 // delete a letter from the current guess
 body.addEventListener('keydown', (e) => {
     if(e.keyCode == 8) {
-        boxid = "#"+String(current_guess_boxes[current_guess.length-1].id)
-        $(boxid).animate({color:'rgb(194, 190, 190)'}, 200);
-        current_guess_boxes[current_guess.length-1].textContent = "";
-        $(boxid).animate({backgroundColor:"rgb(194, 190, 190)"}, 200);
-        current_guess.splice(-1, 1);
+        if (current_guess.length > 0) {
+            boxid = "#"+String(current_guess_boxes[current_guess.length-1].id)
+            $(boxid).animate({color:'rgb(194, 190, 190)'}, 200);
+            current_guess_boxes[current_guess.length-1].textContent = "";
+            $(boxid).animate({backgroundColor:"rgb(194, 190, 190)"}, 200);
+            current_guess.splice(-1, 1);
+        }
     }
 });
 
