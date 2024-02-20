@@ -9,12 +9,13 @@ body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+
+
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     gap:10px;
-    padding-top:10px;
 }
 
 .footer {
@@ -79,4 +80,16 @@ button {
 
 .newgame {
     opacity: 0;
+}
+
+
+.header {
+    top: 0;
+    padding:20px;
+
+}
+
+img {
+    height:50px;
+    width:auto;
 }

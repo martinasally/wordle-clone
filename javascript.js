@@ -5,7 +5,6 @@ const error_message = document.querySelector(".error-message");
 const boxes = document.querySelectorAll(".box");
 const finished = document.querySelector(".finished");
 const newgame = document.querySelector(".newgame");
-const say_the_word = document.querySelector(".say-the-word");
 const body = document.querySelector("body");
 
 guess.maxLength = 5;
@@ -148,12 +147,6 @@ function put_guess_in_grid() {
         $(".finished").animate({color:"black"}, 1500);
         $(".newgame").animate({opacity:"1"}, 1500);
 
-    } else if (guess_number == 5) {
-        finished.style.color = "white";
-        finished.textContent = `oh no :( the word was ${word}`;
-        $(".finished").animate({color:"black"}, 1500);
-        $(".newgame").animate({opacity:"1"}, 1500);
-
     } else {
         // this will cycle through the columns
         for (let i = 0; i < 5; i++) {
@@ -176,6 +169,13 @@ function put_guess_in_grid() {
             }
             
         }
+    }
+
+    if (guess_number == 5) {
+        finished.style.color = "white";
+        finished.textContent = `oh no :( the word was ${word}`;
+        $(".finished").animate({color:"black"}, 1500);
+        $(".newgame").animate({opacity:"1"}, 1500);
     }
 
     guess.value="";
@@ -206,8 +206,6 @@ function end_game_graphic() {
 function new_game() {
     word = pick_word();
     date = Date.now();
-    say_the_word.style.opacity = 0;
-    say_the_word.textContent = word;
     guess.value = "";
     finished.style.color = "white";
     newgame.style.opacity = "0";
